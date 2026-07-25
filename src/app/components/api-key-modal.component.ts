@@ -34,20 +34,35 @@ import { GeminiCrisisService } from '../services/gemini-crisis.service';
         </div>
 
         <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-[11px] text-amber-300">
-          <strong>Security Note:</strong> Keys are stored only in your local browser storage. No server transmission outside official Gemini API calls.
+          <strong>Security Note:</strong> Keys are stored only in your browser's local storage and are only used for official Gemini API calls.
         </div>
 
-        <div class="flex items-center justify-end space-x-3 pt-2">
+        <div class="text-xs text-slate-400">
+          @if (hasKey()) {
+            <p class="text-emerald-300">A Gemini API key is currently saved and will be used for live synthesis.</p>
+          } @else {
+            <p>No API key is saved. The app will use mock crisis data until a key is entered.</p>
+          }
+        </div>
+
+        <div class="flex items-center justify-between space-x-3 pt-2">
           <button 
-            (click)="close.emit()"
+            (click)="clearKey()"
             class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors">
-            Cancel
+            Clear Key
           </button>
-          <button 
-            (click)="save()"
-            class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-amber-500/20 transition-colors">
-            Save Settings
-          </button>
+          <div class="flex items-center gap-3">
+            <button 
+              (click)="close.emit()"
+              class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors">
+              Cancel
+            </button>
+            <button 
+              (click)="save()"
+              class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-amber-500/20 transition-colors">
+              Save Settings
+            </button>
+          </div>
         </div>
 
       </div>
@@ -62,7 +77,17 @@ export class ApiKeyModalComponent {
   @Output() close = new EventEmitter<void>();
 
   save() {
-    this.crisisService.setApiKey(this.keyInput());
+    const trimmedKey = this.keyInput().trim();
+    this.crisisService.setApiKey(trimmedKey);
     this.close.emit();
+  }
+
+  clearKey() {
+    this.keyInput.set('');
+    this.crisisService.setApiKey('');
+  }
+
+  hasKey() {
+    return this.crisisService.apiKey().length > 0;
   }
 }
