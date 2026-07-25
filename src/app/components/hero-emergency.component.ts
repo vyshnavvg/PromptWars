@@ -133,7 +133,7 @@ export class IndividualHelpComponent implements OnDestroy {
     }
 
     this.callingState.set('calling');
-    this.callCountdown.set(5);
+    this.callCountdown.set(10);
     this.showSmsPopup.set(true);
 
     if (this.smsPopupTimer) {

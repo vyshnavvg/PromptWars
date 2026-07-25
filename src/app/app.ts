@@ -87,6 +87,7 @@ import { GeminiCrisisService } from './services/gemini-crisis.service';
   `
 })
 export class App {
+  crisisService = inject(GeminiCrisisService);
   showInspectorModal = signal<boolean>(false);
   showApiKeyModal = signal<boolean>(false);
 }
