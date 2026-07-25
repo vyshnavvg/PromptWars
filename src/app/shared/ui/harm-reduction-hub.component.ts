@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { GeminiCrisisService } from '../services/gemini-crisis.service';
+import { GeminiCrisisService } from '../../core/services/gemini-crisis.service';
 
 @Component({
   selector: 'app-harm-reduction-hub',

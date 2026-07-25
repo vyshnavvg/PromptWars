@@ -1,13 +1,13 @@
 import { Component, signal, inject } from '@angular/core';
-import { HeaderComponent } from './components/header.component';
-import { IndividualHelpComponent } from './components/hero-emergency.component';
-import { CaregiverHelpComponent } from './components/caregiver-help.component';
-import { EmergencyBranchesComponent } from './components/emergency-branches.component';
-import { RespirationSyncComponent } from './components/respiration-sync.component';
-import { HarmReductionHubComponent } from './components/harm-reduction-hub.component';
-import { PromptInspectorModalComponent } from './components/prompt-inspector-modal.component';
-import { ApiKeyModalComponent } from './components/api-key-modal.component';
-import { GeminiCrisisService } from './services/gemini-crisis.service';
+import { HeaderComponent } from './shared/components/header.component';
+import { IndividualHelpComponent } from './features/individual-help/pages/individual-help-page.component';
+import { CaregiverHelpComponent } from './features/caregiver-help/pages/caregiver-help-page.component';
+import { EmergencyBranchesComponent } from './shared/ui/emergency-branches.component';
+import { RespirationSyncComponent } from './shared/ui/respiration-sync.component';
+import { HarmReductionHubComponent } from './shared/ui/harm-reduction-hub.component';
+import { PromptInspectorModalComponent } from './shared/components/prompt-inspector-modal.component';
+import { ApiKeyModalComponent } from './shared/components/api-key-modal.component';
+import { GeminiCrisisService } from './core/services/gemini-crisis.service';
 
 @Component({
   selector: 'app-root',
