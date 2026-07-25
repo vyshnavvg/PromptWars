@@ -49,19 +49,26 @@ https://prompt-wars-cthxcneta9c6hyae.indiasouthcentral-01.azurewebsites.net/
 	- API response parsing fails
 	- API request fails due to network/quota/errors
 
-7. Prompt transparency and telemetry inspector
+7. Caregiver Support Chat with Gemini
+- Caregiver-only chat window below Emergency Action Branches
+- Quick-prompt bubbles for common caregiver scenarios
+- Gemini responses stream in line-by-line with a smooth fade-in effect
+- UI tuned for readable Gemini-style conversation flow
+
+8. Prompt transparency and telemetry inspector
 - Prompt Inspector modal for hackathon judging and debugging
 - Displays active system instruction and enforced JSON schema
 - Shows safety setting configuration used for generation
 - Includes last prompt sent, API latency, and raw API payload snapshot
 
-8. API key management UX
+9. API key management UX
 - Secure key entry via settings modal
 - Key state indicator in the header
 - Save, clear, and status feedback in modal
-- Key stored in browser local storage only
+- Key can be supplied locally via `public/runtime-config.local.js`
+- Azure Web App can supply the key through App Service application settings
 
-9. Responsive crisis-first UI
+10. Responsive crisis-first UI
 - Mobile and desktop responsive layout
 - High-contrast visual hierarchy with large touch targets
 - Modal-driven utilities for quick access under pressure
@@ -98,6 +105,10 @@ npm run start:dev
 
 http://localhost:4200
 
+4. Add your local Gemini API key
+
+Edit `public/runtime-config.local.js` and set `geminiApiKey` to your key. This file is ignored by git and is loaded automatically during local development.
+
 ## Build and Run Production
 
 1. Build production bundle
@@ -109,6 +120,23 @@ npm run build
 npm run start
 
 Server runs on PORT environment variable when available, otherwise 8080.
+
+## Azure Web App Deployment
+
+1. Set an Azure App Service application setting
+
+- Name: `GEMINI_API_KEY`
+- Value: your Gemini API key
+
+2. Configure the startup command
+
+- Use `npm start` so the Node server serves `runtime-config.js` at runtime.
+
+3. Verify the runtime config
+
+- `server.js` exposes `/runtime-config.js` from environment variables
+- `src/index.html` loads both `runtime-config.js` and `runtime-config.local.js`
+- The app reads the Gemini key from runtime config first, then local storage
 
 ## Scripts
 
@@ -123,6 +151,7 @@ Server runs on PORT environment variable when available, otherwise 8080.
 - The app is designed as support tooling and not a replacement for emergency professionals.
 - Helpline call and SOS actions are surfaced as first-class, one-tap options.
 - AI responses are structured and validated with fallback paths to avoid blank or broken UI.
+- Never commit real API keys; use Azure App Service settings for deployment and `public/runtime-config.local.js` for local development.
 
 ## Hackathon Focus
 
