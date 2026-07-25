@@ -20,6 +20,17 @@ const mimeTypes = {
 
 const server = http.createServer((req, res) => {
   const reqPath = decodeURIComponent(new URL(req.url, `http://${req.headers.host}`).pathname);
+
+  if (reqPath === '/runtime-config.js') {
+    const runtimeConfig = {
+      geminiApiKey: process.env.GEMINI_API_KEY || process.env.AZURE_GEMINI_API_KEY || ''
+    };
+
+    res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+    res.end(`window.__ANCHORCARE_RUNTIME__ = ${JSON.stringify(runtimeConfig)};`);
+    return;
+  }
+
   const safePath = reqPath === '/' ? '/index.html' : reqPath;
   const filePath = path.normalize(path.join(distDir, safePath));
 

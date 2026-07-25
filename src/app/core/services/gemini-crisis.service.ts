@@ -13,12 +13,15 @@ export class GeminiCrisisService {
 
   // Reactive state management using Angular Signals
   activePersona = signal<PersonaType>('individual');
-  apiKey = signal<string>(localStorage.getItem('anchor_care_api_key') || '');
+  apiKey = signal<string>('');
   currentCrisisData = signal<CrisisResponse>(MOCK_INDIVIDUAL_CRISIS_DATA);
   isLoading = signal<boolean>(false);
   lastPromptInspectorData = signal<PromptInspectorData | null>(null);
 
   constructor() {
+    const storedKey = localStorage.getItem('anchor_care_api_key') || '';
+    const runtimeKey = this.getRuntimeApiKey();
+    this.apiKey.set(storedKey || runtimeKey);
     // Initial sync
     this.updateDataForPersona(this.activePersona());
   }
@@ -238,5 +241,10 @@ export class GeminiCrisisService {
     if (!input) return '';
     // Strip markdown triple backticks if returned by model
     return input.replace(/```json/g, '').replace(/```/g, '').trim();
+  }
+
+  private getRuntimeApiKey(): string {
+    const runtimeConfig = (window as any).__ANCHORCARE_RUNTIME__;
+    return runtimeConfig?.geminiApiKey || '';
   }
 }
