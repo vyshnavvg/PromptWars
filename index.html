@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AnchorCare AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#fff4f4',
+                100: '#ffe1e1',
+                500: '#d64545',
+                600: '#b82f2f',
+                700: '#8a2020'
+              }
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="min-h-screen px-4 py-4 sm:px-6 lg:px-8">
+      <header class="mx-auto flex max-w-7xl items-center justify-between rounded-full border border-white/10 bg-white/10 px-4 py-3 shadow-lg shadow-black/20 backdrop-blur">
+        <div class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-500/90 text-xl font-black shadow-lg shadow-brand-500/30">A</div>
+          <div>
+            <div class="text-lg font-semibold">AnchorCare.AI</div>
+            <div class="text-xs uppercase tracking-[0.25em] text-slate-300">Build with AI 2026</div>
+          </div>
+        </div>
+
+        <div class="hidden items-center gap-3 md:flex">
+          <label class="swap swap-rotate rounded-full border border-white/10 bg-slate-900/70 px-2 py-2">
+            <input id="modeToggle" type="checkbox" />
+            <span class="swap-on text-sm font-semibold text-amber-300">Caregiver Help</span>
+            <span class="swap-off text-sm font-semibold text-cyan-300">Individual Help</span>
+          </label>
+          <button id="inspectButton" class="btn btn-sm rounded-full border border-white/10 bg-white/10 hover:bg-white/20">Inspect AI Engine</button>
+          <button id="apiKeyButton" class="btn btn-sm rounded-full border border-brand-500/30 bg-brand-500/20 text-brand-100 hover:bg-brand-500/30">Gemini API Key</button>
+        </div>
+      </header>
+
+      <main class="mx-auto mt-8 grid max-w-7xl gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <section class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/30 backdrop-blur xl:p-8">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.3em] text-brand-300">Cognitive-Zero Recovery & Caregiver Emergency Companion</p>
+              <h1 class="mt-2 text-3xl font-black sm:text-4xl">Instant recovery support, grounded and safe.</h1>
+            </div>
+            <div class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">Live demo mode</div>
+          </div>
+
+          <div class="mt-8 flex flex-col items-center justify-center rounded-[2rem] border border-white/10 bg-gradient-to-br from-brand-600/20 via-slate-900 to-slate-950 p-6 shadow-inner shadow-black/30">
+            <button id="helpButton" class="help-button relative flex h-48 w-48 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-red-500 via-red-600 to-rose-700 text-4xl font-black text-white shadow-[0_0_80px_rgba(220,38,38,0.4)] transition-transform hover:scale-105 focus:outline-none">
+              <span class="relative z-10">🚨 HELP</span>
+            </button>
+            <p id="helpHint" class="mt-5 max-w-xl text-center text-sm text-slate-300">Tap for immediate crisis synthesis, calm de-escalation steps, and a safe next action plan.</p>
+          </div>
+
+          <div class="mt-8 grid gap-4 md:grid-cols-2">
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="flex items-center gap-2 text-brand-200">
+                <span class="text-xl">📞</span>
+                <h2 class="font-semibold">Call 112</h2>
+              </div>
+              <p class="mt-3 text-sm text-slate-300">Direct emergency assistance for urgent support in India.</p>
+              <a href="tel:112" class="mt-4 inline-flex items-center text-sm font-semibold text-brand-300 hover:text-brand-100">Dial now →</a>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="flex items-center gap-2 text-cyan-200">
+                <span class="text-xl">🗣️</span>
+                <h2 class="font-semibold">De-escalation Script</h2>
+              </div>
+              <p id="scriptBox" class="mt-3 text-sm text-slate-300">Use a calm voice and keep the scene slow and steady.</p>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="flex items-center gap-2 text-amber-200">
+                <span class="text-xl">🧯</span>
+                <h2 class="font-semibold">Physical Intervention Checklist</h2>
+              </div>
+              <ul id="checklistBox" class="mt-3 space-y-2 text-sm text-slate-300"></ul>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="flex items-center gap-2 text-emerald-200">
+                <span class="text-xl">📱</span>
+                <h2 class="font-semibold">1-Tap SOS Contact Broadcast</h2>
+              </div>
+              <p id="sosBox" class="mt-3 text-sm text-slate-300">Copy and send this message to someone you trust.</p>
+              <button id="copySosButton" class="mt-4 btn btn-sm rounded-full bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/30">Copy message</button>
+            </article>
+          </div>
+        </section>
+
+        <aside class="space-y-6">
+          <section class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/30 backdrop-blur">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-semibold">Safety grounding</h2>
+              <div id="statusPill" class="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-sm text-emerald-300">Ready</div>
+            </div>
+            <div class="mt-6 flex flex-col items-center justify-center">
+              <div class="breathing-circle flex h-32 w-32 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-500/10 text-center text-sm font-semibold text-cyan-100">Breathe in<br />Breathe out</div>
+            </div>
+            <p class="mt-5 text-sm text-slate-300">Slow the room down. Inhale for four counts, then exhale for four counts. Let the pulse guide your body.</p>
+          </section>
+
+          <section class="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/30 backdrop-blur">
+            <h2 class="text-xl font-semibold">Harm reduction micro-cards</h2>
+            <div class="mt-4 space-y-3">
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <h3 class="font-semibold text-brand-200">Naloxone protocol</h3>
+                <p class="mt-1 text-sm text-slate-300">If breathing is slow or absent, call 112, administer naloxone, and keep the airway clear.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <h3 class="font-semibold text-cyan-200">HALT craving framework</h3>
+                <p class="mt-1 text-sm text-slate-300">Hungry, Angry, Lonely, Tired? Pause, hydrate, reach out, and delay the decision.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <h3 class="font-semibold text-amber-200">Caregiver burnout prevention</h3>
+                <p class="mt-1 text-sm text-slate-300">Take a 2-minute reset, ask for backup, and protect your own recovery capacity.</p>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <dialog id="inspectorModal" class="modal">
+      <div class="modal-box max-w-2xl border border-white/10 bg-slate-900 text-slate-100">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="text-lg font-bold">Judge Prompt Inspector</h3>
+        <p class="py-2 text-sm text-slate-300">This view surfaces the system instructions, schema, latency, and safety controls behind the emergency response synthesis.</p>
+        <div class="mt-4 space-y-4">
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <h4 class="text-sm font-semibold uppercase tracking-[0.25em] text-brand-300">System instructions</h4>
+            <p id="systemInstructions" class="mt-2 whitespace-pre-line text-sm text-slate-200"></p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <h4 class="text-sm font-semibold uppercase tracking-[0.25em] text-brand-300">Enforced JSON schema</h4>
+            <pre id="jsonSchema" class="mt-2 overflow-x-auto text-xs text-slate-300"></pre>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <h4 class="text-sm font-semibold uppercase tracking-[0.25em] text-brand-300">Gemini latency</h4>
+              <p id="latencyValue" class="mt-2 text-2xl font-black text-cyan-200">0 ms</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <h4 class="text-sm font-semibold uppercase tracking-[0.25em] text-brand-300">Safety settings</h4>
+              <p id="safetyValue" class="mt-2 text-sm text-slate-300"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop"><button>close</button></form>
+    </dialog>
+
+    <dialog id="apiKeyModal" class="modal">
+      <div class="modal-box max-w-xl border border-white/10 bg-slate-900 text-slate-100">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="text-lg font-bold">Gemini API Key</h3>
+        <p class="mt-2 text-sm text-slate-300">Store a key locally in this browser session for a real API call. If none is provided, the app uses a local mock database.</p>
+        <label class="label mt-4">
+          <span class="label-text text-slate-200">API key</span>
+        </label>
+        <input id="apiKeyInput" type="password" class="input input-bordered w-full bg-slate-800 text-slate-100" placeholder="AIza..." />
+        <div class="mt-4 flex gap-3">
+          <button id="saveApiKeyButton" class="btn bg-brand-500 text-white hover:bg-brand-600">Save</button>
+          <button id="clearApiKeyButton" class="btn btn-ghost">Clear</button>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop"><button>close</button></form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
