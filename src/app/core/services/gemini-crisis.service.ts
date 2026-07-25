@@ -163,6 +163,77 @@ export class GeminiCrisisService {
     );
   }
 
+  sendCaregiverChat(
+    message: string,
+    history: Array<{ role: 'user' | 'model'; text: string }>
+  ): Observable<string> {
+    const key = this.apiKey();
+    if (!key) {
+      return of('Gemini API key is missing. Please add your API key in settings to start live caregiver chat.');
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
+    const caregiverInstruction =
+      'You are AnchorCare AI, a calm and practical emergency caregiver support assistant. Give clear, complete, safety-first steps in plain text only. Do not use markdown symbols like ** or bullet hyphens. Write each step or important idea on its own line with short readable lines. In high-risk cases, tell the caregiver to call emergency helpline 112 immediately.';
+    const caregiverContext =
+      'Context: The user is a caregiver helping a person with substance abuse concerns during distress episodes. Prioritize harm reduction, overdose awareness, de-escalation language, airway/breathing safety checks, and immediate emergency escalation when needed.';
+
+    const safeHistory = history.slice(Math.max(history.length - 8, 0));
+    const contents = [
+      {
+        role: 'user',
+        parts: [{ text: caregiverInstruction }]
+      },
+      {
+        role: 'user',
+        parts: [{ text: caregiverContext }]
+      },
+      ...safeHistory.map((item) => ({
+        role: item.role,
+        parts: [{ text: item.text }]
+      })),
+      {
+        role: 'user',
+        parts: [{ text: message }]
+      }
+    ];
+
+    return this.http
+      .post<any>(
+        url,
+        {
+          contents,
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 3072
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': key
+          }
+        }
+      )
+      .pipe(
+        map((res) => {
+          const parts = res?.candidates?.[0]?.content?.parts;
+          const text = Array.isArray(parts)
+            ? parts
+                .map((part: any) => part?.text || '')
+                .join('\n')
+                .trim()
+            : '';
+
+          return text || 'I could not generate a response right now. Please try again.';
+        }),
+        catchError((err) => {
+          console.warn('Caregiver chat request failed:', err);
+          return of('Unable to reach Gemini right now. Please check your API key or try again shortly.');
+        })
+      );
+  }
+
   private sanitizeString(input: string): string {
     if (!input) return '';
     // Strip markdown triple backticks if returned by model

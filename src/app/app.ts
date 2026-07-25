@@ -2,6 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { HeaderComponent } from './shared/components/header.component';
 import { IndividualHelpComponent } from './features/individual-help/pages/individual-help-page.component';
 import { CaregiverHelpComponent } from './features/caregiver-help/pages/caregiver-help-page.component';
+import { CaregiverChatComponent } from './features/caregiver-help/components/caregiver-chat.component';
 import { EmergencyBranchesComponent } from './shared/ui/emergency-branches.component';
 import { RespirationSyncComponent } from './shared/ui/respiration-sync.component';
 import { HarmReductionHubComponent } from './shared/ui/harm-reduction-hub.component';
@@ -16,6 +17,7 @@ import { GeminiCrisisService } from './core/services/gemini-crisis.service';
     HeaderComponent,
     IndividualHelpComponent,
     CaregiverHelpComponent,
+    CaregiverChatComponent,
     EmergencyBranchesComponent,
     RespirationSyncComponent,
     HarmReductionHubComponent,
@@ -42,6 +44,10 @@ import { GeminiCrisisService } from './core/services/gemini-crisis.service';
 
         <!-- 2. BRANCHING EMERGENCY ACTIONS -->
         <app-emergency-branches></app-emergency-branches>
+
+        @if (crisisService.activePersona() === 'caregiver') {
+          <app-caregiver-chat></app-caregiver-chat>
+        }
 
         <!-- 3. CONTEXTUAL SAFETY & GROUNDING TOOLS -->
         <section class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-900">
