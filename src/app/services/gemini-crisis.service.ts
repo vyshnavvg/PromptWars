@@ -12,9 +12,9 @@ export class GeminiCrisisService {
   private http = inject(HttpClient);
 
   // Reactive state management using Angular Signals
-  activePersona = signal<PersonaType>('caregiver');
+  activePersona = signal<PersonaType>('individual');
   apiKey = signal<string>(localStorage.getItem('anchor_care_api_key') || '');
-  currentCrisisData = signal<CrisisResponse>(MOCK_CAREGIVER_CRISIS_DATA);
+  currentCrisisData = signal<CrisisResponse>(MOCK_INDIVIDUAL_CRISIS_DATA);
   isLoading = signal<boolean>(false);
   lastPromptInspectorData = signal<PromptInspectorData | null>(null);
 

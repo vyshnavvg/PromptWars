@@ -1,18 +1,21 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { HeaderComponent } from './components/header.component';
-import { HeroEmergencyComponent } from './components/hero-emergency.component';
+import { IndividualHelpComponent } from './components/hero-emergency.component';
+import { CaregiverHelpComponent } from './components/caregiver-help.component';
 import { EmergencyBranchesComponent } from './components/emergency-branches.component';
 import { RespirationSyncComponent } from './components/respiration-sync.component';
 import { HarmReductionHubComponent } from './components/harm-reduction-hub.component';
 import { PromptInspectorModalComponent } from './components/prompt-inspector-modal.component';
 import { ApiKeyModalComponent } from './components/api-key-modal.component';
+import { GeminiCrisisService } from './services/gemini-crisis.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     HeaderComponent,
-    HeroEmergencyComponent,
+    IndividualHelpComponent,
+    CaregiverHelpComponent,
     EmergencyBranchesComponent,
     RespirationSyncComponent,
     HarmReductionHubComponent,
@@ -31,8 +34,11 @@ import { ApiKeyModalComponent } from './components/api-key-modal.component';
       <!-- Main App Content -->
       <main class="flex-grow">
         
-        <!-- 1. HERO EMERGENCY COMPONENT (Giant HELP Button) -->
-        <app-hero-emergency></app-hero-emergency>
+        @if (crisisService.activePersona() === 'individual') {
+          <app-individual-help></app-individual-help>
+        } @else {
+          <app-caregiver-help></app-caregiver-help>
+        }
 
         <!-- 2. BRANCHING EMERGENCY ACTIONS -->
         <app-emergency-branches></app-emergency-branches>
