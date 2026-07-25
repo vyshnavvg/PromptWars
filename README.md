@@ -7,6 +7,8 @@ AnchorCare AI is an emergency-first crisis support web application built for Pro
 https://prompt-wars-cthxcneta9c6hyae.indiasouthcentral-01.azurewebsites.net/
 
 <img width="1901" height="850" alt="image" src="https://github.com/user-attachments/assets/edede490-0f81-4042-91d8-e13a783b5f9b" />
+<img width="1457" height="762" alt="image" src="https://github.com/user-attachments/assets/fe1ed038-95af-4ce7-b9ce-99789b6175da" />
+
 
 
 ## Core Features
