@@ -19,7 +19,7 @@ export class GeminiCrisisService {
   lastPromptInspectorData = signal<PromptInspectorData | null>(null);
 
   constructor() {
-    const storedKey = localStorage.getItem('anchor_care_api_key') || '';
+    const storedKey = this.readStoredApiKey();
     const runtimeKey = this.getRuntimeApiKey();
     this.apiKey.set(storedKey || runtimeKey);
     // Initial sync
@@ -29,9 +29,9 @@ export class GeminiCrisisService {
   setApiKey(key: string) {
     this.apiKey.set(key);
     if (key) {
-      localStorage.setItem('anchor_care_api_key', key);
+      this.writeStoredApiKey(key);
     } else {
-      localStorage.removeItem('anchor_care_api_key');
+      this.removeStoredApiKey();
     }
   }
 
@@ -244,7 +244,44 @@ export class GeminiCrisisService {
   }
 
   private getRuntimeApiKey(): string {
+    if (typeof window === 'undefined') {
+      return '';
+    }
+
     const runtimeConfig = (window as any).__ANCHORCARE_RUNTIME__;
     return runtimeConfig?.geminiApiKey || '';
+  }
+
+  private readStoredApiKey(): string {
+    try {
+      return this.getStorage()?.getItem('anchor_care_api_key') || '';
+    } catch {
+      return '';
+    }
+  }
+
+  private writeStoredApiKey(key: string): void {
+    try {
+      this.getStorage()?.setItem('anchor_care_api_key', key);
+    } catch {
+      // Ignore storage failures in restricted environments.
+    }
+  }
+
+  private removeStoredApiKey(): void {
+    try {
+      this.getStorage()?.removeItem('anchor_care_api_key');
+    } catch {
+      // Ignore storage failures in restricted environments.
+    }
+  }
+
+  private getStorage(): Storage | null {
+    if (typeof globalThis === 'undefined') {
+      return null;
+    }
+
+    const storage = (globalThis as any).localStorage;
+    return storage && typeof storage.getItem === 'function' ? (storage as Storage) : null;
   }
 }
